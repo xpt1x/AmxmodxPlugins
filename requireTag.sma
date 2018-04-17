@@ -3,7 +3,7 @@
 
 #define TAG "DEV"
 
-new flags[32]
+new flags[32], bool: removedAccess
 
 public plugin_init() register_plugin("Require TAG", "1.0", "DiGiTaL")
 public client_putinserver(id) set_task(1.0, "validateUser", id)
@@ -16,7 +16,8 @@ public validateUser(id){
 	{
 		flags[id] = get_user_flags(id)
 		remove_user_flags(id)
+		removedAccess = true
 	} 
-	if(!is_user_admin(id) && containi(szName, TAG) != -1 ) set_user_flags(id, flags[id])
+	if(!is_user_admin(id) && removedAccess && containi(szName, TAG) != -1 ) set_user_flags(id, flags[id])
 	return PLUGIN_CONTINUE
 }
