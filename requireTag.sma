@@ -5,7 +5,7 @@
 
 new flags[32], bool: removedAccess
 
-public plugin_init() register_plugin("Require TAG", "1.0", "DiGiTaL")
+public plugin_init() register_plugin("Require TAG", "2.0", "DiGiTaL")
 public client_putinserver(id) set_task(1.0, "validateUser", id)
 public client_infochanged(id) set_task(0.1 , "validateUser", id)
 
