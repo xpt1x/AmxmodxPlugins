@@ -13,7 +13,7 @@
 
 public plugin_init()
 {
-	register_plugin("Simple Chat Prefixes", "1.1 - BETA", "DiGiTaL")
+	register_plugin("Simple Chat Prefixes", "1.2 - BETA", "DiGiTaL")
 	register_clcmd("say", "handleSay")
 	register_clcmd("say_team", "handleTeamSay")
 }
@@ -33,7 +33,7 @@ public checkMsg(id, bool:teamSay)
 
 	if(type == 0) return PLUGIN_CONTINUE
 
-	setMsg(id, is_user_admin(id), tags[type], is_user_alive(id), teamSay)
+	setMsg(id, bool:is_user_admin(id), tags[type], bool:is_user_alive(id), teamSay)
 	return PLUGIN_HANDLED
 }
 
