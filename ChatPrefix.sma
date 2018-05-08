@@ -8,7 +8,7 @@
 
 public plugin_init()
 {
-	register_plugin("Lite Chat Prefixes", "1.0", "DiGiTaL")
+	register_plugin("Lite Chat Prefixes", "1.1", "DiGiTaL")
 	register_cvar("litechatpre", "Running", FCVAR_SERVER| FCVAR_SPONLY) 
 	register_clcmd("say", "handleSay")
 	register_clcmd("say_team", "handleTeamSay")
@@ -24,11 +24,9 @@ public checkMsg(id, bool:teamSay)
 	if(OWNER(id)) type = 1
 	else if(ADMIN(id)) type = 2
 	else if(VIP(id)) type = 3
-	else type = 0
-	
-	if(type == 0) return PLUGIN_CONTINUE
+	else return PLUGIN_CONTINUE
 	setMsg(id, tags[type], bool:is_user_alive(id), teamSay)
-	return PLUGIN_HANDLED
+	return PLUGIN_HANDLED_MAIN
 }
 
 stock setMsg(index, type[], bool:is_alive, bool:is_teamSay)
@@ -40,7 +38,7 @@ stock setMsg(index, type[], bool:is_alive, bool:is_teamSay)
 	read_args(szArg, charsmax(szArg))
 	remove_quotes(szArg)
 	#if defined HIDE_SLASH
-	if (!szArg[0] || szArg[0] == '/') return PLUGIN_HANDLED
+	if (!szArg[0] || szArg[0] == '/') return;
 	#endif
 
 	if(is_alive)
@@ -68,5 +66,4 @@ stock setMsg(index, type[], bool:is_alive, bool:is_teamSay)
 			for(new i;i < num; i++) client_print_color(players[i], 0, nMsg)
 		}
 	} 
-	return PLUGIN_HANDLED
 }
