@@ -1,5 +1,4 @@
 #include <amxmodx>
-#include <amxmisc>
 #if AMXX_VERSION_NUM < 183
 	#include <colorchat>
 #endif
