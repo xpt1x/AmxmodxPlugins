@@ -6,6 +6,9 @@
 #define OWNER(%0) (get_user_flags(%0) & ADMIN_RCON)
 #define ADMIN(%0) (get_user_flags(%0) & ADMIN_BAN)
 #define VIP(%0) (get_user_flags(%0) & ADMIN_RESERVATION)
+
+//#define DEADCHAT
+//#define TEAMDEADCHAT
 #define HIDE_SLASH
 
 public plugin_init()
@@ -21,17 +24,17 @@ public handleTeamSay(id) return checkMsg(id, true)
 
 public checkMsg(id, bool:teamSay)
 {
-	new type
+	new class
 	static tags[][] = { "", "^1[^4OWNER^1]", "^1[^4ADMIN^1]", "^1[^4VIP^1]" } /* Prefix are here */
-	if(OWNER(id)) type = 1
-	else if(ADMIN(id)) type = 2
-	else if(VIP(id)) type = 3
+	if(OWNER(id)) class = 1
+	else if(ADMIN(id)) class = 2
+	else if(VIP(id)) class = 3
 	else return PLUGIN_CONTINUE
-	setMsg(id, tags[type], bool:is_user_alive(id), teamSay)
+	setMsg(id, tags[class], bool:is_user_alive(id), teamSay)
 	return PLUGIN_HANDLED_MAIN
 }
 
-stock setMsg(index, type[], bool:is_alive, bool:is_teamSay)
+stock setMsg(index, class[], bool:is_alive, bool:is_teamSay)
 {
 	new nMsg[192],szArg[192], szName[32], szTeam[32], players[32], num, pTeam[32]
 	get_user_name(index, szName, charsmax(szName))
@@ -52,24 +55,32 @@ stock setMsg(index, type[], bool:is_alive, bool:is_teamSay)
 	if(is_alive)
 	{
 		if(is_teamSay) {
-			formatex(nMsg, charsmax(nMsg), "^1(%s) %s ^3%s ^1: ^4%s", pTeam, type, szName, szArg)
+			formatex(nMsg, charsmax(nMsg), "^1(%s) %s ^3%s ^1: ^4%s", pTeam, class, szName, szArg)
 			get_players(players, num, "ae", szTeam)
 		}
 		else {
-			formatex(nMsg, charsmax(nMsg), "%s ^3%s ^1: ^4%s", type, szName, szArg)
+			formatex(nMsg, charsmax(nMsg), "%s ^3%s ^1: ^4%s", class, szName, szArg)
 			get_players(players, num, "a")
 		}
 	} 
 	else
 	{
 		if(is_teamSay) {
-			formatex(nMsg, charsmax(nMsg), "^1*DEAD* (%s) %s ^3%s ^1: ^4%s", pTeam, type, szName, szArg)
+			formatex(nMsg, charsmax(nMsg), "^1*DEAD* (%s) %s ^3%s ^1: ^4%s", pTeam, class, szName, szArg)
+			#if defined TEAMDEADCHAT
+			get_players(players, num, "e", szTeam)
+			#else
 			get_players(players, num, "be", szTeam)
+			#endif
 		}
 		else {
-			formatex(nMsg, charsmax(nMsg), "^1*DEAD* %s ^3%s ^1: ^4%s", type, szName, szArg)
+			formatex(nMsg, charsmax(nMsg), "^1*DEAD* %s ^3%s ^1: ^4%s", class, szName, szArg)
+			#if defined DEADCHAT
+			get_players(players, num)
+			#else
 			get_players(players, num, "b")
+			#endif
 		}
 	}
-	for(new i;i < num; i++) client_print_color(players[i], 0, nMsg) 
+	for(new i; i<num; i++) client_print_color(players[i], 0, nMsg) 
 }
