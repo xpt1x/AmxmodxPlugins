@@ -13,7 +13,7 @@
 
 public plugin_init()
 {
-	register_plugin("Lite Chat Prefixes", "1.2", "DiGiTaL")
+	register_plugin("Lite Chat Prefixes", "1.3", "DiGiTaL")
 	register_cvar("litechatpre", "Running", FCVAR_SERVER| FCVAR_SPONLY) 
 	register_clcmd("say", "handleSay")
 	register_clcmd("say_team", "handleTeamSay")
